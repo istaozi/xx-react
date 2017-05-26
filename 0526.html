@@ -2,73 +2,48 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ES6 模板字符串</title>
 </head>
 <body>
-<div class="wrapper">
-    <button class="like-btn">
-        <span class="like-text">点赞</span>
-    </button>
-</div>
 <div class="wrapper-demo1"></div>
 <div class="wrapper-demo2"></div>
 <script>
-  /*将String变成dom*/
-  const creatDOMFromString=(domString)=>{
-      const  div=document.createElement('div');
-      div.innerHTML=domString
-      return div;
 
-  }
+    const basket={count:6,aa:'AAA'}
+    const wrapper1=document.querySelector(".wrapper-demo1")
+    wrapper1.innerHTML="这有<b>"+basket.count+"</b>"+"个球,型号是<em>"+basket.aa+"</em>"
+    const wrapper2=document.querySelector(".wrapper-demo2")
+    wrapper2.innerHTML=`<br>这有<b>${basket.count}</b>个球，型号是<em>${basket.aa}</em> `
+   /*
+   *模板字符串（template string）是增強版的字符串，用反引号（键盘数字1 左边的波浪键）标识。
+   * 模板字符串可以当做普通的字符串使用，也可以用用来定义多行字符串，或者在字符串中嵌入变量。
+   * */
 
-  class Component{
-      constructor () {
-          this.state = { isLiked: false }
-      }
-      setState(state){
-          const oldEl=this.el
-          this.state=state
-          this.el=this._renderDOM
-          if(this.onStateChange)this.onStateChange(oldEl,this.el)
-      }
-      _renderDOM(){
-          this.el=creatDOMFromString(this.render())
-          if(this.onClick){
-              this.el.addEventListener('click',this.onClick.bind(this),false)
-          }
-          return this.el
-      }
-  }
-  const mount=(component,wrapper)=>{
-      wrapper.appendChild(component._renderDOM())
-      component.onStateChange=(oldEl,newEl)=>{
-          wrapper.insertBefore(newEl,oldEl)
-          wrapper.removeChild(oldEl)
-      }
-  }
+    const linefeed=`In Javascript '\b' is a line-feed` //在JavaScript中这是一个换行
+    console.log("linefeed=="+linefeed)
 
-  class LikeButton extends Component {
-      constructor () {
-          this.state = { isLiked: false }
-      }
+    //多行字符串
+   const moreline=`In Javascript this is
+    not legal`
+    console.log("moreline=="+moreline)
+    console.log(`string text line 1
+    string text line2`)
 
-      onClick () {
-          this.setState({
-              isLiked: !this.state.isLiked
-          })
-      }
+    //在模板字符串中嵌入变量，需要将变量名卸载${}中
+    var name="BOb" ,time="today"
+    var strin=`Hellow ${name},how are you ${time}`
+    console.log("字符串嵌入变量"+strin)
 
-      render () {
-          return `
-        <button class='like-btn'>
-          <span class='like-text'>${this.state.isLiked ? '取消' : '点赞'}</span>
-          <span>👍</span>
-        </button>
-      `
-      }
-  }
+    //如果在模板字符串中需要使用反引号，则在其前面要用反斜杠转义
+    var greeting=` \`Yo\` world `
+    console.log("如果在模板字符串中使用反引号，则在其前面使用反斜杠转义"+greeting)
 
-  mount(new LikeButton(), wrapper)
+    //如果使用模板字符串表示多行字符串，所有的空格和缩进 都会被保留在输出中
+    console.warn(`<h1>Watch out !</h1>
+    <P>Unauthorized hockeying can result in penalties
+     of up     to </P>
+`)
+
 </script>
 </body>
 </html>
